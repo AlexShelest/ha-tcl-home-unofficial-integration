@@ -1,11 +1,11 @@
 """."""
 
-import logging
 from enum import StrEnum
 
 from .device_capabilities import DeviceCapabilityEnum
 from .device_types import DeviceTypeEnum
 
+import logging
 _LOGGER = logging.getLogger(__name__)
 
 
