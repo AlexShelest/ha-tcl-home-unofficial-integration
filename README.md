@@ -12,7 +12,7 @@
 - Breeva Air Purifier A2 (by Ajsalemo)
 - Breeva Air Purifier A3 (by Ajsalemo)
 - Breeva Air Purifier A5 (by Ajsalemo)
-- Cylindrical AC
+- Cylindrical AC (by joe-sal)
 
 ## Notes by device types
 
