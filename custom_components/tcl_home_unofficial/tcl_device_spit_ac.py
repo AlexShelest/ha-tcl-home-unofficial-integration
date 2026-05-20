@@ -44,6 +44,8 @@ class TCL_SplitAC_DeviceData:
         self.upper_temperature_limit    = int(try_get_value(delta, aws_thing_state, "upperTemperatureLimit", 36))
         self.sensor_TVOC_level          = int(try_get_value(delta, aws_thing_state, "sensorTVOCLevel", -1))
         self.new_wind_switch            = int(try_get_value(delta, aws_thing_state, "newWindSwitch", -1))
+        self.new_wind_auto_switch       = int(try_get_value(delta, aws_thing_state, "newWindAutoSwitch", -1))
+        self.new_wind_strength          = int(try_get_value(delta, aws_thing_state, "newWindStrength", -1))
         self.sensor_TVOC_value          = float(try_get_value(delta, aws_thing_state, "sensorTVOCValue", -1))
         
 
@@ -78,6 +80,8 @@ class TCL_SplitAC_DeviceData:
     sensor_TVOC_level: int
     sensor_TVOC_value: float
     new_wind_switch: int
+    new_wind_auto_switch: int
+    new_wind_strength: int
 
 async def get_stored_spit_ac_data(
     hass: HomeAssistant, device_id: str

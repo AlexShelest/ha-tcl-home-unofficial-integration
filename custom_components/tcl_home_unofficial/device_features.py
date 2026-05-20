@@ -142,9 +142,6 @@ def getSupportedFeatures(
                 if has_work_time_data:
                     features.append(DeviceFeatureEnum.SENSOR_WORK_TIME_DAILY)
                 if len(capabilities) > 0:
-                    if DeviceCapabilityEnum.CAPABILITY_SOFT_WIND in capabilities:
-                        features.append(DeviceFeatureEnum.SWITCH_SOFT_WIND)
-
                     if DeviceCapabilityEnum.CAPABILITY_8C_HEATING in capabilities:
                         features.append(DeviceFeatureEnum.SWITCH_8_C_HEATING)
 
@@ -189,6 +186,14 @@ def getSupportedFeatures(
 
                 if has_property(aws_thing_state_reported, "newWindSwitch"):
                     features.append(DeviceFeatureEnum.SWITCH_FRESH_AIR)
+
+                if has_property(aws_thing_state_reported, "newWindStrength"):
+                    features.append(DeviceFeatureEnum.SELECT_FRESH_AIR)
+
+                if has_property(aws_thing_state_reported, "softWind"):
+                    features.append(DeviceFeatureEnum.SWITCH_SOFT_WIND)
+
+                    
 
                 return features
             case DeviceTypeEnum.CYLINDRICAL_AC:
