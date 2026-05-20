@@ -24,8 +24,6 @@ class TCL_PortableAC_DeviceData:
         self.target_celsius_degree      = int(try_get_value(delta, aws_thing_state, "targetCelsiusDegree", -1))
         self.temperature_type           = int(try_get_value(delta, aws_thing_state, "temperatureType", -1))
         self.sleep                      = int(try_get_value(delta, aws_thing_state, "sleep", -1))
-        self.lower_temperature_limit    = int(try_get_value(delta, aws_thing_state, "lowerTemperatureLimit", 18))
-        self.upper_temperature_limit    = int(try_get_value(delta, aws_thing_state, "upperTemperatureLimit", 32))
         self.current_temperature        = int(try_get_value(delta, aws_thing_state, "currentTemperature", -1))
 
     device_id: str
@@ -38,8 +36,6 @@ class TCL_PortableAC_DeviceData:
     target_celsius_degree: int | bool
     temperature_type: int | bool
     sleep: int | bool
-    upper_temperature_limit: int
-    lower_temperature_limit: int
     current_temperature: int
 
 
@@ -54,11 +50,13 @@ async def get_stored_portable_ac_data(
 
     stored_data, need_save = setup_common_init_values(stored_data)
     
-    stored_data, need_save = safe_set_value(stored_data, "non_user_config.native_temp_step", 1)    
-
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.memorize_temp_by_mode", False)
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.memorize_fan_speed_by_mode", False)
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.silent_beep_when_turn_on", False)
+
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.native_temp_step", 1.0)
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.min_temp", 18)
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.max_temp", 32)
 
     stored_data, need_save = safe_set_value(stored_data, "target_temperature.Cool.value", 22)
 

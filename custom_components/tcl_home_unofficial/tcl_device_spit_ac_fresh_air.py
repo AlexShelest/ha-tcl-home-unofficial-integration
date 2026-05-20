@@ -39,8 +39,6 @@ class TCL_SplitAC_Fresh_Air_DeviceData:
         self.external_unit_coil_temperature     = float(try_get_value(delta, aws_thing_state, "externalUnitCoilTemperature", -1))
         self.external_unit_temperature          = float(try_get_value(delta, aws_thing_state, "externalUnitTemperature", -1))
         self.external_unit_exhaust_temperature  = float(try_get_value(delta, aws_thing_state, "externalUnitExhaustTemperature", -1))
-        self.lower_temperature_limit            = int(try_get_value(delta, aws_thing_state, "lowerTemperatureLimit", 16))
-        self.upper_temperature_limit            = int(try_get_value(delta, aws_thing_state, "upperTemperatureLimit", 31))
         self.tvoc_level                         = int(try_get_value(delta, aws_thing_state, "sensorTVOC", {"level":-1, "value":0.1}).get("level", -1))
         self.tvoc_value                         = float(try_get_value(delta, aws_thing_state, "sensorTVOC", {"level":-1, "value":0.1}).get("value", 0.1))
 
@@ -69,8 +67,6 @@ class TCL_SplitAC_Fresh_Air_DeviceData:
     soft_wind: int
     generator_mode: int
     light_sense: int
-    upper_temperature_limit: int
-    lower_temperature_limit: int
     tvoc_level: int
     tvoc_value: float
 
@@ -86,11 +82,13 @@ async def get_stored_spit_ac_fresh_data(
 
     stored_data, need_save = setup_common_init_values(stored_data)
     
-    stored_data, need_save = safe_set_value(stored_data, "non_user_config.native_temp_step", 0.5)
-
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.memorize_temp_by_mode", True)
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.memorize_fan_speed_by_mode", True)
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.silent_beep_when_turn_on", False)
+
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.native_temp_step", 0.5)
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.min_temp", 16)
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.max_temp", 31)
 
     stored_data, need_save = safe_set_value(stored_data, "target_temperature.Cool.value", 24)
     stored_data, need_save = safe_set_value(stored_data, "target_temperature.Heat.value", 36)

@@ -88,6 +88,9 @@ class DeviceFeatureEnum(StrEnum):
     USER_CONFIG_BEHAVIOR_MEMORIZE_FAN_SPEED_BY_MODE = "user_config.behavior.memorize_fan_speed_by_mode"
     USER_CONFIG_BEHAVIOR_MEMORIZE_HUMIDITY_BY_MODE = "user_config.behavior.memorize_humidity_by_mode"
     USER_CONFIG_BEHAVIOR_SILENT_BEEP_WHEN_TURN_ON = "user_config.behavior.silent_beep_when_turn_on"
+    USER_CONFIG_SETTINGS_NATIVE_TEMP_STEP = "user_config.settings.native_temp_step"
+    USER_CONFIG_SETTINGS_MIN_TEMP = "user_config.settings.min_temp"
+    USER_CONFIG_SETTINGS_MAX_TEMP = "user_config.settings.max_temp"
 
 
 def has_property(aws_thing_state_reported: dict[str, any], propertyName: str) -> bool:
@@ -136,6 +139,9 @@ def getSupportedFeatures(
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_TEMP_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_FAN_SPEED_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_SILENT_BEEP_WHEN_TURN_ON,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_NATIVE_TEMP_STEP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MIN_TEMP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MAX_TEMP,
                 ]
                 if has_power_consumption_data:
                     features.append(DeviceFeatureEnum.SENSOR_POWER_CONSUMPTION_DAILY)
@@ -220,6 +226,9 @@ def getSupportedFeatures(
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_TEMP_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_FAN_SPEED_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_SILENT_BEEP_WHEN_TURN_ON,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_NATIVE_TEMP_STEP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MIN_TEMP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MAX_TEMP,
                 ]
                 if has_power_consumption_data:
                     features.append(DeviceFeatureEnum.SENSOR_POWER_CONSUMPTION_DAILY)
@@ -276,6 +285,9 @@ def getSupportedFeatures(
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_TEMP_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_FAN_SPEED_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_SILENT_BEEP_WHEN_TURN_ON,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_NATIVE_TEMP_STEP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MIN_TEMP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MAX_TEMP,
                 ]
                 if has_power_consumption_data:
                     features.append(DeviceFeatureEnum.SENSOR_POWER_CONSUMPTION_DAILY)
@@ -307,6 +319,9 @@ def getSupportedFeatures(
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_TEMP_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_FAN_SPEED_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_SILENT_BEEP_WHEN_TURN_ON,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_NATIVE_TEMP_STEP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MIN_TEMP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MAX_TEMP,
                 ]
                 if has_power_consumption_data:
                     features.append(DeviceFeatureEnum.SENSOR_POWER_CONSUMPTION_DAILY)
@@ -357,6 +372,9 @@ def getSupportedFeatures(
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_TEMP_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_MEMORIZE_FAN_SPEED_BY_MODE,
                     DeviceFeatureEnum.USER_CONFIG_BEHAVIOR_SILENT_BEEP_WHEN_TURN_ON,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_NATIVE_TEMP_STEP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MIN_TEMP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MAX_TEMP,
                 ]
                 if has_power_consumption_data:
                     features.append(DeviceFeatureEnum.SENSOR_POWER_CONSUMPTION_DAILY)
@@ -416,6 +434,9 @@ def getSupportedFeatures(
                     DeviceFeatureEnum.SELECT_MODE,
                     DeviceFeatureEnum.NUMBER_TARGET_DEGREE,
                     DeviceFeatureEnum.SENSOR_IS_ONLINE,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_NATIVE_TEMP_STEP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MIN_TEMP,
+                    DeviceFeatureEnum.USER_CONFIG_SETTINGS_MAX_TEMP,
                 ]
                 if has_power_consumption_data:
                     features.append(DeviceFeatureEnum.SENSOR_POWER_CONSUMPTION_DAILY)

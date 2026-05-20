@@ -3,6 +3,7 @@
 import logging
 
 from homeassistant.components.number import NumberDeviceClass, NumberEntity, NumberMode
+from homeassistant.const import EntityCategory
 from homeassistant.const import UnitOfTemperature, PERCENTAGE
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -14,7 +15,7 @@ from .device import Device
 from .device_features import DeviceFeatureEnum
 from .device_types import DeviceTypeEnum
 from .device_enums import ModeEnum, DehumidifierModeEnum
-from .data_storage import set_stored_data, get_stored_data
+from .data_storage import get_stored_data, safe_get_value, safe_set_value,set_stored_data
 from .tcl_entity_base import TclEntityBase
 
 _LOGGER = logging.getLogger(__name__)
@@ -68,8 +69,8 @@ class DesiredStateHandlerForNumber:
 
     async def NUMBER_TARGET_TEMPERATURE(self, value: int | float):
         # _LOGGER.info("Setting target temperature to %s %s", value, self.device)
-        min_temp = self.device.data.lower_temperature_limit
-        max_temp = self.device.data.upper_temperature_limit
+        min_temp = self.device.storage["user_config"]["settings"]["min_temp"]
+        max_temp = self.device.storage["user_config"]["settings"]["max_temp"]
 
         if value < min_temp or value > max_temp:
             _LOGGER.error(
@@ -89,8 +90,8 @@ class DesiredStateHandlerForNumber:
         )
 
     async def NUMBER_TARGET_DEGREE(self, value: int | float):
-        min_temp = self.device.data.lower_temperature_limit
-        max_temp = self.device.data.upper_temperature_limit
+        min_temp = self.device.storage["user_config"]["settings"]["min_temp"]
+        max_temp = self.device.storage["user_config"]["settings"]["max_temp"]
 
         if value < min_temp or value > max_temp:
             _LOGGER.error(
@@ -199,6 +200,48 @@ async def async_setup_entry(
                     current_value_fn=lambda device: device.data.humidity
                 )
             )
+        
+        if (DeviceFeatureEnum.USER_CONFIG_SETTINGS_NATIVE_TEMP_STEP in device.supported_features):
+            customEntities.append(
+                ConfigTempNumberHandler(
+                    hass=hass,
+                    coordinator=coordinator,
+                    device=device,
+                    config_path="user_config.settings.native_temp_step",
+                    name="Set Temp. Step",
+                    min=0.5,
+                    max=1,
+                    step=0.5
+                )
+            )
+        
+        if (DeviceFeatureEnum.USER_CONFIG_SETTINGS_MAX_TEMP in device.supported_features):
+            customEntities.append(
+                ConfigTempNumberHandler(
+                    hass=hass,
+                    coordinator=coordinator,
+                    device=device,
+                    config_path="user_config.settings.max_temp",
+                    name="Max Temp.",
+                    min=10,
+                    max=40,
+                    step=1
+                )
+            )
+        
+        if (DeviceFeatureEnum.USER_CONFIG_SETTINGS_MIN_TEMP in device.supported_features):
+            customEntities.append(
+                ConfigTempNumberHandler(
+                    hass=hass,
+                    coordinator=coordinator,
+                    device=device,
+                    config_path="user_config.settings.min_temp",
+                    name="Min Temp.",
+                    min=10,
+                    max=40,
+                    step=1
+                )
+            )
 
     async_add_entities(customEntities)
 
@@ -234,11 +277,9 @@ class TemperatureHandler(TclEntityBase, NumberEntity):
         self._attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
         self._attr_native_value = self.current_value_fn(self.device)
 
-        self._attr_native_min_value = self.device.data.lower_temperature_limit
-        self._attr_native_max_value = self.device.data.upper_temperature_limit
-        self._attr_native_step = self.device.storage["non_user_config"][
-            "native_temp_step"
-        ]
+        self._attr_native_min_value = self.device.storage["user_config"]["settings"]["min_temp"]
+        self._attr_native_max_value = self.device.storage["user_config"]["settings"]["max_temp"]
+        self._attr_native_step = self.device.storage["user_config"]["settings"]["native_temp_step"]
 
     @property
     def available(self) -> bool:
@@ -324,3 +365,54 @@ class HumidityHandler(TclEntityBase, NumberEntity):
         await self.iot_handler.store_humidity(value)
         await self.coordinator.async_refresh()
         self.async_write_ha_state()
+
+class ConfigTempNumberHandler(TclEntityBase, NumberEntity):
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        coordinator: IotDeviceCoordinator,
+        device: Device,
+        name: str,
+        config_path: str,
+        min:float,
+        max:float,
+        step:float
+    ) -> None:
+        TclEntityBase.__init__(self, coordinator, config_path, name, device)
+        self.hass = hass
+        self.device = device
+       
+        self.config_path = config_path
+        self._attr_entity_category = EntityCategory.CONFIG
+
+
+        self._attr_native_min_value = min
+        self._attr_native_max_value = max
+        self._attr_native_step = step
+        self._attr_mode=NumberMode.BOX
+
+    @property
+    def icon(self):
+        return "mdi:cog"
+
+    @property
+    def device_class(self) -> str:
+        return NumberDeviceClass.TEMPERATURE
+
+    @property
+    def native_value(self) -> int | float:
+        # self.device = self.coordinator.get_device_by_id(self.device.device_id)
+        # stored_data=await get_device_storage(self.hass,self.device)
+        return safe_get_value(self.device.storage, self.config_path, 20)
+
+    async def async_set_native_value(self, value: float) -> None:
+        """Update the current value."""
+        self.device = self.coordinator.get_device_by_id(self.device.device_id)
+
+        storage_data, need_save = safe_set_value(
+            self.device.storage, self.config_path, value, overwrite_if_exists=True
+        )
+
+        if need_save:
+            await set_stored_data(self.hass, self.device.device_id, storage_data)
+        await self.coordinator.async_refresh()        

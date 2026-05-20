@@ -29,8 +29,6 @@ class TCL_DuctAC_DeviceData:
         self.wind_speed_7_gear          = int(try_get_value(delta, aws_thing_state, "windSpeed7Gear", -1))
         self.ai_eco                     = int(try_get_value(delta, aws_thing_state, "AIECOSwitch", -1))
         self.external_unit_temperature  = int(try_get_value(delta, aws_thing_state, "externalUnitTemperature", -1))
-        self.lower_temperature_limit    = int(try_get_value(delta, aws_thing_state, "lowerTemperatureLimit", 16))
-        self.upper_temperature_limit    = int(try_get_value(delta, aws_thing_state, "upperTemperatureLimit", 31))
 
     device_id: str
     power_switch: int | bool
@@ -47,8 +45,6 @@ class TCL_DuctAC_DeviceData:
     ai_eco: int
     wind_speed_auto_switch: int
     external_unit_temperature: int
-    upper_temperature_limit: int
-    lower_temperature_limit: int
 
 
 async def get_stored_duct_ac_data(
@@ -60,12 +56,14 @@ async def get_stored_duct_ac_data(
         stored_data = {}
         need_save = True
     stored_data, need_save = setup_common_init_values(stored_data)
-    
-    stored_data, need_save = safe_set_value(stored_data, "non_user_config.native_temp_step", 1.0)
-    
+        
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.memorize_temp_by_mode", True)
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.memorize_fan_speed_by_mode", False)
     stored_data, need_save = safe_set_value(stored_data, "user_config.behavior.silent_beep_when_turn_on", False)
+
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.native_temp_step", 1.0)
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.min_temp", 16)
+    stored_data, need_save = safe_set_value(stored_data, "user_config.settings.max_temp", 31)
 
     stored_data, need_save = safe_set_value(stored_data, "target_temperature.Cool.value", 24)
     stored_data, need_save = safe_set_value(stored_data, "target_temperature.Heat.value", 36)

@@ -308,11 +308,9 @@ class ClimateHandler(TclEntityBase, ClimateEntity):
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
 
         self._target_temperature = self.current_target_temp_fn(device)
-        self._attr_min_temp = self.device.data.lower_temperature_limit
-        self._attr_max_temp = self.device.data.upper_temperature_limit
-        self._attr_target_temperature_step = self.device.storage["non_user_config"][
-            "native_temp_step"
-        ]
+        self._attr_min_temp = self.device.storage["user_config"]["settings"]["min_temp"]
+        self._attr_max_temp = self.device.storage["user_config"]["settings"]["max_temp"]
+        self._attr_target_temperature_step = self.device.storage["user_config"]["settings"]["native_temp_step"]
 
     def refresh_device(self) -> None:
         self.device = self.coordinator.get_device_by_id(self.device.device_id)
