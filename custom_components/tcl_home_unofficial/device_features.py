@@ -187,6 +187,9 @@ def getSupportedFeatures(
                 if has_property(aws_thing_state_reported, "sensorTVOCValue"):
                     features.append(DeviceFeatureEnum.SENSOR_SPLIT_AC_TVOC_VALUE)
 
+                if has_property(aws_thing_state_reported, "newWindSwitch"):
+                    features.append(DeviceFeatureEnum.SWITCH_FRESH_AIR)
+
                 return features
             case DeviceTypeEnum.CYLINDRICAL_AC:
                 features = [

@@ -30,7 +30,7 @@ def is_implemented_by_integration(device_type: str) -> bool:
         "Split AC Fresh air",
         "Portable AC",
         "Window AC",
-        "Cylindrical AC",                      # <-- NEU
+        "Cylindrical AC",
         "Dehumidifier DEM",
         "Dehumidifier DF",
         "Duct",
