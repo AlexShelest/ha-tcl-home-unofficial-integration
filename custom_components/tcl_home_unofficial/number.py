@@ -430,6 +430,12 @@ class ConfigTempNumberHandler(TclEntityBase, NumberEntity):
     def native_value(self) -> int | float:
         # self.device = self.coordinator.get_device_by_id(self.device.device_id)
         # stored_data=await get_device_storage(self.hass,self.device)
+        if self.config_path=="user_config.settings.min_temp":
+            return safe_get_value(self.device.storage, self.config_path, 18)
+        if self.config_path=="user_config.settings.max_temp":
+            return safe_get_value(self.device.storage, self.config_path, 36)
+        if self.config_path=="user_config.settings.native_temp_step":
+            return safe_get_value(self.device.storage, self.config_path, 1)
         return safe_get_value(self.device.storage, self.config_path, 20)
 
     async def async_set_native_value(self, value: float) -> None:
