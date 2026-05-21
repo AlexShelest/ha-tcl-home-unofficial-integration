@@ -69,8 +69,16 @@ class DesiredStateHandlerForNumber:
 
     async def NUMBER_TARGET_TEMPERATURE(self, value: int | float):
         # _LOGGER.info("Setting target temperature to %s %s", value, self.device)
-        min_temp = self.device.storage["user_config"]["settings"]["min_temp"]
-        max_temp = self.device.storage["user_config"]["settings"]["max_temp"]
+        min_temp = 18
+        try:
+            min_temp = self.device.storage["user_config"]["settings"]["min_temp"]
+        except Exception:
+            min_temp = 18
+        max_temp = 36
+        try:
+            max_temp = self.device.storage["user_config"]["settings"]["max_temp"]
+        except Exception:
+            max_temp = 36
 
         if value < min_temp or value > max_temp:
             _LOGGER.error(
@@ -90,8 +98,16 @@ class DesiredStateHandlerForNumber:
         )
 
     async def NUMBER_TARGET_DEGREE(self, value: int | float):
-        min_temp = self.device.storage["user_config"]["settings"]["min_temp"]
-        max_temp = self.device.storage["user_config"]["settings"]["max_temp"]
+        min_temp = 18
+        try:
+            min_temp = self.device.storage["user_config"]["settings"]["min_temp"]
+        except Exception:
+            min_temp = 18
+        max_temp = 36
+        try:
+            max_temp = self.device.storage["user_config"]["settings"]["max_temp"]
+        except Exception:
+            max_temp = 36            
 
         if value < min_temp or value > max_temp:
             _LOGGER.error(
@@ -277,9 +293,20 @@ class TemperatureHandler(TclEntityBase, NumberEntity):
         self._attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
         self._attr_native_value = self.current_value_fn(self.device)
 
-        self._attr_native_min_value = self.device.storage["user_config"]["settings"]["min_temp"]
-        self._attr_native_max_value = self.device.storage["user_config"]["settings"]["max_temp"]
-        self._attr_native_step = self.device.storage["user_config"]["settings"]["native_temp_step"]
+        try:
+            self._attr_native_min_value = self.device.storage["user_config"]["settings"]["min_temp"]
+        except Exception:
+            self._attr_native_min_value = 18
+        
+        try:
+            self._attr_native_max_value = self.device.storage["user_config"]["settings"]["max_temp"]
+        except Exception:
+            self._attr_native_max_value = 36
+        
+        try:
+            self._attr_native_step = self.device.storage["user_config"]["settings"]["native_temp_step"]
+        except Exception:
+            self._attr_native_step = 1
 
     @property
     def available(self) -> bool:
