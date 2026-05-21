@@ -51,7 +51,7 @@ async def async_setup_entry(
                     mode_select_feature=DeviceFeatureEnum.SELECT_MODE,
                     power_switch_feature=DeviceFeatureEnum.SWITCH_POWER,
                     humidity_set_feature=DeviceFeatureEnum.NUMBER_DEHUMIDIFIER_HUMIDITY,
-                    is_on_fn=lambda device: device.data.power_switch==1,
+                    is_on_fn=lambda device: (device and device.data and device.data.power_switch==1),
                     current_mode_fn= lambda device: get_current_mode_fn(device),
                     current_humidity_fn=lambda device: device.data.env_humidity,
                     target_humidity_fn=lambda device: device.data.humidity,

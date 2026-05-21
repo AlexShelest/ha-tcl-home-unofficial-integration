@@ -31,24 +31,37 @@ async def async_setup_entry(
     for device in config_entry.devices:
         sensors.append(
             DynamicBinarySensorHandlerNoAutoIsOnlineCheck(
+                hass=hass,
                 coordinator=coordinator,
                 device=device,
                 type="IsOnline",
                 name="Is Online",
-                icon_fn=lambda device: "mdi:cloud-check-outline" if device.is_online == 1 else "mdi:cloud-cancel-outline",
+                icon_fn=lambda device: (
+                    "mdi:cloud-check-outline"
+                    if device.is_online == 1
+                    else "mdi:cloud-cancel-outline"
+                ),
                 is_on_fn=lambda device: device.is_online,
                 is_available_fn=lambda device: True,
             )
         )
-        if DeviceFeatureEnum.SENSOR_DEHUMIDIFIER_WATER_BUCKET_FULL in device.supported_features:
+        if (
+            DeviceFeatureEnum.SENSOR_DEHUMIDIFIER_WATER_BUCKET_FULL
+            in device.supported_features
+        ):
             sensors.append(
                 BinarySensorHandlerOccupancy(
+                    hass=hass,
                     coordinator=coordinator,
                     device=device,
                     type="IsDehumidifierWaterBucketFull",
                     name="Is Water Bucket Full",
-                    icon_fn=lambda device: "mdi:bucket" if 5 in device.data.error_code else "mdi:bucket-outline",
-                    is_on_fn=lambda device:(5 in device.data.error_code)
+                    icon_fn=lambda device: (
+                        "mdi:bucket"
+                        if 5 in device.data.error_code
+                        else "mdi:bucket-outline"
+                    ),
+                    is_on_fn=lambda device: 5 in device.data.error_code,
                 )
             )
 
@@ -58,6 +71,7 @@ async def async_setup_entry(
 class BinarySensorHandler(TclEntityBase, BinarySensorEntity):
     def __init__(
         self,
+        hass: HomeAssistant, 
         coordinator: IotDeviceCoordinator,
         device: Device,
         type: str,
@@ -66,8 +80,12 @@ class BinarySensorHandler(TclEntityBase, BinarySensorEntity):
         is_on_fn: lambda device: bool,
     ) -> None:
         TclEntityBase.__init__(self, coordinator, type, name, device)
+        self.hass=hass
+        self.coordinator=coordinator
+        self.type = type
         self.icon_fn = icon_fn
         self.is_on_fn = is_on_fn
+        self.prev_state = self.is_on_fn(self.device)
 
     @property
     def icon(self):
@@ -80,12 +98,17 @@ class BinarySensorHandler(TclEntityBase, BinarySensorEntity):
     @property
     def is_on(self) -> bool | None:
         self.device = self.coordinator.get_device_by_id(self.device.device_id)
-        return self.is_on_fn(self.device)
+        new_state = self.is_on_fn(self.device)
+        if self.type == "IsOnline" and new_state != self.prev_state:
+            self.hass.async_create_task(self.coordinator.async_refresh())
+        self.prev_state = new_state
+        return new_state
 
 
 class BinarySensorHandlerOccupancy(TclEntityBase, BinarySensorEntity):
     def __init__(
         self,
+        hass: HomeAssistant, 
         coordinator: IotDeviceCoordinator,
         device: Device,
         type: str,
@@ -110,11 +133,13 @@ class BinarySensorHandlerOccupancy(TclEntityBase, BinarySensorEntity):
         self.device = self.coordinator.get_device_by_id(self.device.device_id)
         return self.is_on_fn(self.device)
 
+
 class DynamicBinarySensorHandlerNoAutoIsOnlineCheck(
     BinarySensorHandler, BinarySensorEntity
 ):
     def __init__(
         self,
+        hass: HomeAssistant, 
         coordinator: IotDeviceCoordinator,
         device: Device,
         type: str,
@@ -125,6 +150,7 @@ class DynamicBinarySensorHandlerNoAutoIsOnlineCheck(
     ) -> None:
         BinarySensorHandler.__init__(
             self,
+            hass=hass,
             coordinator=coordinator,
             device=device,
             type=type,

@@ -139,7 +139,7 @@ def is_allowed(device: Device) -> bool:
         )
     else:
         if DeviceFeatureEnum.SWITCH_8_C_HEATING in device.supported_features:
-            if device.data.eight_add_hot == 1:
+            if device and device.data and device.data.eight_add_hot == 1:
                 return False
         return True
 

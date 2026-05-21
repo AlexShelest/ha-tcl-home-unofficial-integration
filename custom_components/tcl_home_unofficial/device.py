@@ -60,6 +60,7 @@ class Device:
         self.name = "noName"
         self.storage = device_storage
         self.firmware_version = "noVersion"
+        self.has_tcl_thing = "false"
         self.has_aws_thing = "false"
         self.capabilities_str = ""
         self.capabilities = []
@@ -69,6 +70,7 @@ class Device:
         self.is_online = False
         self.extra_tcl_data = extra_tcl_data if extra_tcl_data is not None else {}
         if tcl_thing is not None:
+            self.has_tcl_thing = "true"
             self.is_online = tcl_thing.is_online
             self.product_key = tcl_thing.product_key
             self.device_type_str = tcl_thing.device_name
@@ -184,6 +186,7 @@ class Device:
     device_type: str
     device_type_str: str
     has_aws_thing: str
+    has_tcl_thing: str
     name: str
     firmware_version: str
     is_online: bool
@@ -341,9 +344,11 @@ class Device:
 
     def print_data(self):
         _LOGGER.info("Device ID: %s", self.device_id)
-        _LOGGER.info("data: %s", self.data)
-        _LOGGER.info("data: %s", self.extra_tcl_data)
-
+        _LOGGER.info("device-data: %s", self.data)
+        _LOGGER.info("device-extra_tcl_data: %s", self.extra_tcl_data)
+        _LOGGER.info("device-has_aws_thing %s", self.has_aws_thing)
+        _LOGGER.info("device-has_tcl_thing %s", self.has_tcl_thing)
+        _LOGGER.info("device-is_online %s", self.is_online)
 
 def toDeviceInfo(device: Device) -> DeviceInfo:
     """Convert Device to DeviceInfo."""

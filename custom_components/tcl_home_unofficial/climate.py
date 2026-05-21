@@ -90,7 +90,7 @@ def get_horizonta_air_direction_feature(device: Device) -> str:
 
 
 def get_current_mode_fn(device: Device) -> str:
-    if device.data.power_switch == 0:
+    if device and device.data and device.data.power_switch == 0:
         return "OFF"
     return device.mode_value_to_enum_mapp.get(device.data.work_mode, ModeEnum.AUTO)
 

@@ -870,7 +870,7 @@ def get_SELECT_SLEEP_MODE_available_fn(device: Device) -> str:
 
 
 def get_SELECT_FRESH_AIR_available_fn(device: Device) -> str:
-    if device.data.new_wind_switch == 1:
+    if device and device.data and device.data.new_wind_switch == 1:
         return True
     return False
 
@@ -904,26 +904,26 @@ def get_WORK_MODE_available_fn(device: Device) -> str:
 
 def get_SELECT_PORTABLE_WIND_SPEED_available_fn(device: Device) -> str:
     if DeviceFeatureEnum.MODE_AC_AUTO in device.supported_features:
-        return device.data.sleep != 1
+        return device and device.data and device.data.sleep != 1
     else:
         current_mode = device.mode_value_to_enum_mapp.get(
             device.data.work_mode, ModeEnum.COOL
         )
         if current_mode == ModeEnum.DEHUMIDIFICATION:
             return False
-        return device.data.sleep != 1
+        return device and device.data and device.data.sleep != 1
 
 
 def get_SELECT_PORTABLE_WIND_4VALUE_SPEED_available_fn(device: Device) -> str:
     if DeviceFeatureEnum.MODE_AC_AUTO in device.supported_features:
-        return device.data.sleep != 1
+        return device and device.data and device.data.sleep != 1
     else:
         current_mode = device.mode_value_to_enum_mapp.get(
             device.data.work_mode, ModeEnum.COOL
         )
         if current_mode == ModeEnum.DEHUMIDIFICATION:
             return False
-        return device.data.sleep != 1
+        return device and device.data and device.data.sleep != 1
 
 
 async def async_setup_entry(
@@ -999,7 +999,7 @@ async def async_setup_entry(
                         ],
                         available_fn=lambda device: (
                             get_AIR_PURIFIER_BREEVA_FAN_WIND_SPEED_available_fn(device)
-                            if device.data.power_switch == 1
+                            if device and device.data and device.data.power_switch == 1
                             else False
                         ),
                     )
@@ -1020,7 +1020,7 @@ async def async_setup_entry(
                     ],
                     available_fn=lambda device: (
                         get_WORK_MODE_available_fn(device)
-                        if device.data.power_switch == 1
+                        if device and device.data and device.data.power_switch == 1
                         else False
                     ),
                 )

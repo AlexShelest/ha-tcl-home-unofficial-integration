@@ -79,11 +79,11 @@ async def async_setup_entry(
                     type="SelfCleanButton",
                     name="Evaporator Clean",
                     name_fn=lambda device: "Stop Evaporator Cleaning"
-                    if device.data.self_clean == 1
+                    if device and device.data and device.data.self_clean == 1
                     else "Start Evaporator Cleaning",
                     deviceFeature=DeviceFeatureEnum.BUTTON_SELF_CLEAN,
                     icon_fn=lambda device: "mdi:cancel"
-                    if device.data.self_clean == 1
+                    if device and device.data and device.data.self_clean == 1
                     else "mdi:broom",
                     value_fn=lambda device: device.data.self_clean,
                 )
@@ -168,7 +168,7 @@ class Reload_Button(TclNonPollingEntityBase, ButtonEntity):
     def icon(self):
         return "mdi:cloud-sync"
 
-    async def async_press(self) -> None:        
+    async def async_press(self) -> None:
         power_consumption_data_enabled= safe_get_value(self.device.storage, "non_user_config.power_consumption.enabled", False)
         work_time_data_enabled= safe_get_value(self.device.storage, "non_user_config.work_time.enabled", False)        
         if power_consumption_data_enabled or work_time_data_enabled:        

@@ -98,7 +98,7 @@ class DesiredStateHandlerForSwitch:
                     DeviceFeatureEnum.SWITCH_8_C_HEATING
                     in self.device.supported_features
                 ):
-                    if self.device.data.eight_add_hot == 1:
+                    if self.device and self.device.data and self.device.data.eight_add_hot == 1:
                         return False
                 return True
             case DeviceFeatureEnum.SWITCH_SOFT_WIND:
@@ -143,21 +143,21 @@ class DesiredStateHandlerForSwitch:
             # This is close enough to the behavior without writing a whole new switch class
             # When power is on, it'll load the last known state - so if shield was on, it'll be on
             case DeviceFeatureEnum.SWITCH_SHIELD_SWITCH:
-                if self.device.data.power_switch == 0:
+                if self.device and self.device.data and self.device.data.power_switch == 0:
                     return False
                 return True
             case DeviceFeatureEnum.SWITCH_ANION:
                 return True
             case DeviceFeatureEnum.SWITCH_PANEL_LIGHT_AUTO_OFF:
-                if self.device.data.power_switch == 0:
+                if self.device and self.device.data and self.device.data.power_switch == 0:
                     return False
                 return True
             case DeviceFeatureEnum.SWITCH_SCREEN_SWITCH:
-                if self.device.data.power_switch == 0:
+                if self.device and self.device.data and self.device.data.power_switch == 0:
                     return False
                 return True
             case DeviceFeatureEnum.SWITCH_CHILD_LOCK_SWITCH:
-                if self.device.data.power_switch == 0:
+                if self.device and self.device.data and self.device.data.power_switch == 0:
                     return False
                 return True
             case _:
@@ -318,7 +318,7 @@ async def async_setup_entry(
                     name="Power Switch",
                     icon_fn=lambda device: (
                         "mdi:power-plug"
-                        if device.data.power_switch == 1
+                        if device and device.data and device.data.power_switch == 1
                         else "mdi:power-plug-off"
                     ),
                     is_on_fn=lambda device: device.data.power_switch,
@@ -335,7 +335,7 @@ async def async_setup_entry(
                     type="ShieldSwitch",
                     name="Shield Switch",
                     icon_fn=lambda device: (
-                        "mdi:shield-check" if device.data.shield_switch == 1 
+                        "mdi:shield-check" if device and device.data and device.data.shield_switch == 1 
                         else "mdi:shield-off"
                     ),
                     is_on_fn=lambda device: device.data.shield_switch,
@@ -352,7 +352,7 @@ async def async_setup_entry(
                     type="AnionSwitch",
                     name="Anion Switch",
                     icon_fn=lambda device: (
-                        "mdi:atom-variant" if device.data.anion_switch == 1 
+                        "mdi:atom-variant" if device and device.data and device.data.anion_switch == 1 
                         else "mdi:atom-variant"
                     ),
                     is_on_fn=lambda device: device.data.anion_switch,
@@ -370,7 +370,7 @@ async def async_setup_entry(
                     name="Panel Light Auto Off Switch",
                     icon_fn=lambda device: (
                         "mdi:lightbulb-outline"
-                        if device.data.panel_light_auto_off == 1
+                        if device and device.data and device.data.panel_light_auto_off == 1
                         else "mdi:lightbulb-off-outline"
                     ),
                     is_on_fn=lambda device: device.data.panel_light_auto_off,
@@ -388,7 +388,7 @@ async def async_setup_entry(
                     name="Screen Switch",
                     icon_fn=lambda device: (
                         "mdi:lightbulb-outline"
-                        if device.data.screen_switch == 1
+                        if device and device.data and device.data.screen_switch == 1
                         else "mdi:lightbulb-off-outline"
                     ),
                     is_on_fn=lambda device: device.data.screen_switch,
@@ -405,7 +405,7 @@ async def async_setup_entry(
                     type="ChildLockSwitch",
                     name="Child Lock Switch",
                     icon_fn=lambda device: (
-                        "mdi:human-child" if device.data.child_lock_switch == 1 
+                        "mdi:human-child" if device and device.data and device.data.child_lock_switch == 1 
                         else "mdi:human-child"
                     ),
                     is_on_fn=lambda device: device.data.child_lock_switch,
@@ -423,7 +423,7 @@ async def async_setup_entry(
                     name="Beep Mode Switch",
                     icon_fn=lambda device: (
                         "mdi:volume-high"
-                        if device.data.beep_switch == 1
+                        if device and device.data and device.data.beep_switch == 1
                         else "mdi:volume-off"
                     ),
                     is_on_fn=lambda device: device.data.beep_switch,
@@ -440,7 +440,7 @@ async def async_setup_entry(
                     type="ECO",
                     name="ECO Switch",
                     icon_fn=lambda device: (
-                        "mdi:leaf" if device.data.eco == 1 else "mdi:leaf-off"
+                        "mdi:leaf" if device and device.data and device.data.eco == 1 else "mdi:leaf-off"
                     ),
                     is_on_fn=lambda device: device.data.eco,
                 )
@@ -456,7 +456,7 @@ async def async_setup_entry(
                     type="aiECO",
                     name="AI ECO Switch",
                     icon_fn=lambda device: (
-                        "mdi:leaf" if device.data.ai_eco == 1 else "mdi:leaf-off"
+                        "mdi:leaf" if device and device.data and device.data.ai_eco == 1 else "mdi:leaf-off"
                     ),
                     is_on_fn=lambda device: device.data.ai_eco,
                 )
@@ -486,7 +486,7 @@ async def async_setup_entry(
                     type="Healthy",
                     name="Healthy Switch",
                     icon_fn=lambda device: (
-                        "mdi:heart" if device.data.healthy == 1 else "mdi:heart-off"
+                        "mdi:heart" if device and device.data and device.data.healthy == 1 else "mdi:heart-off"
                     ),
                     is_on_fn=lambda device: device.data.healthy,
                 )
@@ -503,7 +503,7 @@ async def async_setup_entry(
                     name="Drying Switch",
                     icon_fn=lambda device: (
                         "mdi:opacity"
-                        if device.data.anti_moldew == 1
+                        if device and device.data and device.data.anti_moldew == 1
                         else "mdi:water-off-outline"
                     ),
                     is_on_fn=lambda device: device.data.anti_moldew,
@@ -521,7 +521,7 @@ async def async_setup_entry(
                     name="Diplay Light Switch",
                     icon_fn=lambda device: (
                         "mdi:lightbulb-outline"
-                        if device.data.screen == 1
+                        if device and device.data and device.data.screen == 1
                         else "mdi:lightbulb-off-outline"
                     ),
                     is_on_fn=lambda device: device.data.screen,
@@ -595,7 +595,7 @@ async def async_setup_entry(
                     name="Fresh Air",
                     icon_fn=lambda device: (
                         "mdi:window-open-variant"
-                        if device.data.new_wind_switch == 1
+                        if device and device.data and device.data.new_wind_switch == 1
                         else "mdi:window-closed-variant"
                     ),
                     is_on_fn=lambda device: device.data.new_wind_switch,
