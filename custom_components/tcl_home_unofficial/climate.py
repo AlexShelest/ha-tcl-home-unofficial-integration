@@ -37,6 +37,7 @@ from .number import DesiredStateHandlerForNumber
 from .select import DesiredStateHandlerForSelect
 from .switch import DesiredStateHandlerForSwitch
 from .tcl_entity_base import TclEntityBase
+from .data_storage import safe_get_value
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -308,20 +309,9 @@ class ClimateHandler(TclEntityBase, ClimateEntity):
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
 
         self._target_temperature = self.current_target_temp_fn(device)
-        try:
-            self._attr_min_temp = self.device.storage["user_config"]["settings"]["min_temp"]
-        except Exception:
-            self._attr_min_temp = 18
-        
-        try:
-            self._attr_max_temp = self.device.storage["user_config"]["settings"]["max_temp"]
-        except Exception:
-            self._attr_max_temp = 36
-        
-        try:
-            self._attr_target_temperature_step = self.device.storage["user_config"]["settings"]["native_temp_step"]
-        except Exception:
-            self._attr_target_temperature_step = 1
+        self._attr_min_temp = safe_get_value(self.device.storage,"user_config.settings.min_temp",18)
+        self._attr_max_temp = safe_get_value(self.device.storage,"user_config.settings.max_temp",36)
+        self._attr_target_temperature_step = safe_get_value(self.device.storage,"user_config.settings.native_temp_step",1)                
 
     def refresh_device(self) -> None:
         self.device = self.coordinator.get_device_by_id(self.device.device_id)
