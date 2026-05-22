@@ -77,6 +77,7 @@ class DeviceFeatureEnum(StrEnum):
     BUTTON_SELF_CLEAN = "button.selfClean"
     CLIMATE = "climate"
     HUMIDIFIER = "humidifier"
+    LIGHT_AMBIENT = "ambientLight"
     INTERNAL_IS_AC = "internal.is.ac"
     INTERNAL_IS_DEHUMIDIFIER = "internal.is.dehumidifier"
     INTERNAL_HAS_SWING_SWITCH = "internal.hasSwingSwitch"
@@ -485,6 +486,10 @@ def getSupportedFeatures(
 
                 if has_property(aws_thing_state_reported, "panelLightAutoOFF"):
                     features.append(DeviceFeatureEnum.SWITCH_PANEL_LIGHT_AUTO_OFF)
+
+                if has_property(aws_thing_state_reported, "ambientLight"):
+                    
+                    features.append(DeviceFeatureEnum.LIGHT_AMBIENT)
 
                 return features
             case DeviceTypeEnum.AIR_PURIFIER_BREEVA_A2:

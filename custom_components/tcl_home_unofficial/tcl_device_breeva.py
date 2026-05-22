@@ -35,13 +35,15 @@ class TCL_Breeva_DeviceData:
         self.screen_switch = int(try_get_value(delta, aws_thing_state, "screenSwitch", -1))
         self.anion_switch = int(try_get_value(delta, aws_thing_state, "anionSwitch", -1))
         self.shield_switch = int(try_get_value(delta, aws_thing_state, "shieldSwitch", -1))
-        # ambient_light's shape is ambient_light.powerSwitch and ambient_light.brightness
-        # TODO: need to figure out if dot notation works here
-        # self.ambient_light = int(try_get_value(delta, aws_thing_state, "ambientLight", -1))
-        self.child_lock_switch = int(try_get_value(delta, aws_thing_state, "childLockSwitch", -1))
+        
+        self.ambient_light_power_switch=int(try_get_value(delta.get("ambientLight",{}), aws_thing_state.get("ambientLight",{}), "powerSwitch", -1))
+        self.ambient_light_brightness=int(try_get_value(delta.get("ambientLight",{}), aws_thing_state.get("ambientLight",{}), "brightness", -1))
+        
+        self.child_lock_switch = int(try_get_value(delta, aws_thing_state, "childLockSwitch", -1))        
         self.timer_remaining = int(try_get_value(delta, aws_thing_state, "timerRemaining", -1))
         self.panel_light_auto_off = int(try_get_value(delta, aws_thing_state, "panelLightAutoOFF", -1))
         self.favourite_mode_switch = int(try_get_value(delta, aws_thing_state, "favouriteModeSwitch", -1))
+
 
     device_id: str
     power_switch: int | bool
@@ -58,6 +60,8 @@ class TCL_Breeva_DeviceData:
     timer_remaining: int | bool
     panel_light_auto_off: int | bool
     favourite_mode_switch: int | bool
+    ambient_light_power_switch: int | bool
+    ambient_light_brightness: int | bool
 
 async def get_stored_breeva_data(
     hass: HomeAssistant, device_id: str

@@ -40,6 +40,7 @@ _PLATFORMS: list[Platform] = [
     Platform.CLIMATE,
     Platform.HUMIDIFIER,
     Platform.TEXT,
+    Platform.LIGHT,
 ]
 
 _LOGGER = logging.getLogger(__name__)

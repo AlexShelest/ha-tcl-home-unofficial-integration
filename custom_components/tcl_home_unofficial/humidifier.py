@@ -35,7 +35,7 @@ async def async_setup_entry(
     config_entry: New_NameConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ):
-    """Set up the Binary Sensors."""
+    """Set up the Humidifier Sensors."""
     coordinator = config_entry.runtime_data.coordinator
 
     humidifiers = []
