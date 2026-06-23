@@ -19,6 +19,7 @@ class TclEntityBase(CoordinatorEntity):
         self.type = type
         self._name = name
         self._attr_has_entity_name = True
+        self._attr_translation_key = type
         self._attr_unique_id = f"{DOMAIN}-{type}-{device.device_id}"
 
     @callback
@@ -50,6 +51,7 @@ class TclNonPollingEntityBase(Entity):
         self.type = type
         self._name = name
         self._attr_has_entity_name = True
+        self._attr_translation_key = type
         self._attr_unique_id = f"{DOMAIN}-{type}-{device.device_id}"
 
     @property
