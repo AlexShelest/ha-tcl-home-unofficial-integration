@@ -1,0 +1,284 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Устройство уже настроено"
+    },
+    "error": {
+      "cannot_connect": "Не удалось подключиться",
+      "invalid_auth": "Неверные учётные данные",
+      "unknown": "Неожиданная ошибка"
+    },
+    "flow_title": "TCL Home app - Unofficial",
+    "step": {
+      "settings_of_app": {
+        "data": {
+          "app_login_url": "URL входа в приложение",
+          "cloud_urls": "Облачные URL приложения",
+          "app_id": "Идентификатор приложения"
+        },
+        "description": "Обычно эти значения не нужно менять. Они предусмотрены на случай, если TCL изменит их в будущем — тогда можно будет исправить здесь без обновления интеграции.",
+        "title": "Настройки Android-приложения"
+      },
+      "settings_of_logs": {
+        "title": "Настройки журнала",
+        "description": "Логирование можно включить позже в настройках интеграции. Логи будут доступны по пути: Настройки → Система → Журналы → (меню «...») → Показать полные логи",
+        "data": {
+          "verbose_device_logging": "Логи устройств: необработанный JSON изменений состояния и т.д.",
+          "verbose_session_logging": "Логи управления сессией: токены доступа и т.д.",
+          "verbose_setup_logging": "Логи настройки: устройства, найденные при первоначальной конфигурации, и т.д."
+        }
+      },
+      "user": {
+        "data": {
+          "password": "Пароль от TCL Home",
+          "username": "Email от TCL Home"
+        },
+        "description": "Интеграция будет представляться Android-приложением TCL Home. Используйте те же учётные данные, что и в приложении. (Рекомендуется создать отдельную учётную запись и открыть ей доступ к устройствам — на случай блокировки аккаунта со стороны TCL.)",
+        "title": "Аккаунт"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Параметры",
+        "description": "Любое изменение конфигурации выполнит повторный вход в TCL Home."
+      },
+      "option_page_account": {
+        "title": "Аккаунт",
+        "description": "Интеграция будет представляться Android-приложением TCL Home. Используйте те же учётные данные, что и в приложении. (Рекомендуется создать отдельную учётную запись и открыть ей доступ к устройствам — на случай блокировки аккаунта со стороны TCL.)",
+        "data": {
+          "username": "Email от TCL Home",
+          "password": "Пароль от TCL Home"
+        }
+      },
+      "option_page_tcl_app": {
+        "title": "Настройки Android-приложения",
+        "description": "Обычно эти значения не нужно менять. Они предусмотрены на случай, если TCL изменит их в будущем — тогда можно будет исправить здесь без обновления интеграции.",
+        "data": {
+          "app_login_url": "URL входа в приложение",
+          "cloud_urls": "Облачные URL приложения",
+          "app_id": "Идентификатор приложения"
+        }
+      },
+      "option_page_logs": {
+        "title": "Настройки журнала",
+        "description": "Логирование можно включить позже в настройках интеграции. Логи будут доступны по пути: Настройки → Система → Журналы → (меню «...») → Показать полные логи",
+        "data": {
+          "verbose_device_logging": "Логи устройств: необработанный JSON изменений состояния и т.д.",
+          "verbose_session_logging": "Логи управления сессией: токены доступа и т.д.",
+          "verbose_setup_logging": "Логи настройки: устройства, найденные при первоначальной конфигурации, и т.д."
+        }
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "switch.beepSwitch": {
+        "name": "Звуковой сигнал"
+      },
+      "switch.powerSwitch": {
+        "name": "Питание"
+      },
+      "switch.eco": {
+        "name": "Режим ECO"
+      },
+      "switch.AIeco": {
+        "name": "Режим AI ECO"
+      },
+      "switch.8CHeating": {
+        "name": "Обогрев 8 °C"
+      },
+      "switch.healthy": {
+        "name": "Режим «Здоровье»"
+      },
+      "switch.drying": {
+        "name": "Осушение"
+      },
+      "switch.screen": {
+        "name": "Подсветка дисплея"
+      },
+      "switch.lightSense": {
+        "name": "Датчик освещённости"
+      },
+      "switch.swingWind": {
+        "name": "Вертикальный поворот жалюзи"
+      },
+      "switch.sleep": {
+        "name": "Ночной режим"
+      },
+      "switch.softWind": {
+        "name": "Мягкий ветер"
+      },
+      "switch.freshAir": {
+        "name": "Свежий воздух"
+      },
+      "user_config.behavior.memorize_temp_by_mode": {
+        "name": "Запоминать температуру по режиму"
+      },
+      "user_config.behavior.memorize_fan_speed_by_mode": {
+        "name": "Запоминать скорость вентилятора по режиму"
+      },
+      "user_config.behavior.silent_beep_when_turn_on": {
+        "name": "Без звука при включении"
+      }
+    },
+    "sensor": {
+      "sensor.current_temperature": {
+        "name": "Текущая температура"
+      },
+      "sensor.internal_unit_coil_temperature": {
+        "name": "Температура змеевика внутреннего блока"
+      },
+      "sensor.external_unit_coil_temperature": {
+        "name": "Температура змеевика внешнего блока"
+      },
+      "sensor.external_unit_temperature": {
+        "name": "Температура внешнего блока"
+      },
+      "sensor.external_unit_exhaust_temperature": {
+        "name": "Температура выхлопа внешнего блока"
+      }
+    },
+    "binary_sensor": {
+      "sensor.is_online": {
+        "name": "В сети"
+      }
+    },
+    "select": {
+      "select.mode": {
+        "name": "Режим",
+        "state": {
+          "Cool": "Охлаждение",
+          "Heat": "Обогрев",
+          "Dehumidification": "Осушение",
+          "Fan": "Вентиляция",
+          "Auto": "Авто"
+        }
+      },
+      "select.windSpeed": {
+        "name": "Скорость вентилятора",
+        "state": {
+          "Strong": "Максимальная",
+          "High": "Высокая",
+          "Mid-high": "Выше средней",
+          "Medium": "Средняя",
+          "Mid-low": "Ниже средней",
+          "Low": "Низкая",
+          "Mute": "Бесшумная",
+          "Auto": "Авто"
+        }
+      },
+      "select.windSpeed7Gear": {
+        "name": "Скорость вентилятора",
+        "state": {
+          "Turbo": "Турбо",
+          "Auto": "Авто",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5",
+          "6": "6"
+        }
+      },
+      "select.windFeeling": {
+        "name": "Тип обдува",
+        "state": {
+          "Not set": "Не задан",
+          "Soft": "Мягкий",
+          "Shower": "Душевой",
+          "Carpet": "Ковровый",
+          "Surround": "Круговой"
+        }
+      },
+      "select.verticalDirection": {
+        "name": "Вертикальное направление потока",
+        "state": {
+          "Up and down swing": "Автоколебание вверх-вниз",
+          "Upwards swing": "Колебание вверх",
+          "Downwards swing": "Колебание вниз",
+          "Top fix": "Верхнее фиксированное",
+          "Upper fix": "Верхнее среднее фиксированное",
+          "Middle fix": "Среднее фиксированное",
+          "Lower fix": "Нижнее среднее фиксированное",
+          "Bottom fix": "Нижнее фиксированное",
+          "Not set": "Не задано"
+        }
+      },
+      "select.horizontalDirection": {
+        "name": "Горизонтальное направление потока",
+        "state": {
+          "Left and right swing": "Автоколебание влево-вправо",
+          "Left swing": "Колебание влево",
+          "Middle swing": "Колебание по центру",
+          "Right swing": "Колебание вправо",
+          "Left fix": "Левое фиксированное",
+          "Center-left fix": "Центрально-левое фиксированное",
+          "Middle fix": "Центральное фиксированное",
+          "Center-right fix": "Центрально-правое фиксированное",
+          "Right fix": "Правое фиксированное",
+          "Not set": "Не задано"
+        }
+      },
+      "select.sleepMode": {
+        "name": "Ночной режим",
+        "state": {
+          "Standard": "Стандартный",
+          "Elderly": "Для пожилых",
+          "Child": "Детский",
+          "off": "Выкл"
+        }
+      },
+      "select.freshAir": {
+        "name": "Интенсивность свежего воздуха",
+        "state": {
+          "Auto": "Авто",
+          "1": "1",
+          "2": "2",
+          "3": "3"
+        }
+      },
+      "select.generatorMode": {
+        "name": "Режим генератора",
+        "state": {
+          "Not set": "Не задан",
+          "L1 30%": "L1 30%",
+          "L2 50%": "L2 50%",
+          "L3 70%": "L3 70%"
+        }
+      },
+      "select.temperatureType": {
+        "name": "Единица температуры",
+        "state": {
+          "Fahrenheit": "Фаренгейт",
+          "Celsius": "Цельсий"
+        }
+      },
+      "select.portableWindSeed": {
+        "name": "Скорость вентилятора",
+        "state": {
+          "High": "Высокая",
+          "Low": "Низкая",
+          "Auto": "Авто"
+        }
+      }
+    },
+    "number": {
+      "number.targetDegree": {
+        "name": "Целевая температура"
+      },
+      "number.targetTemperature": {
+        "name": "Целевая температура"
+      }
+    },
+    "button": {
+      "button.selfClean.on": {
+        "name": "Остановить очистку испарителя"
+      },
+      "button.selfClean.off": {
+        "name": "Запустить очистку испарителя"
+      }
+    }
+  }
+}
